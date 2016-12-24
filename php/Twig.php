@@ -67,6 +67,7 @@ function render($entry, $options = array()) {
     'extensions' => array(),
     'aliases' => array(),
     'context' => array(),
+    'environment' => array(),
   ), $options);
 
   // Get the root template directory either from the given file or specified in the options.
@@ -81,7 +82,7 @@ function render($entry, $options = array()) {
   ));
 
   // @todo Provide a mechanism to allow custom Twig extensions either via PHP or better JS.
-  $twig = new Twig_Environment($loader);
+  $twig = new Twig_Environment($loader, $options['environment']);
 
   _invokeExtensions($options['extensions'] ?: array(), $twig);
 
