@@ -90,7 +90,15 @@ function render($entry, $options = array()) {
     return $twig->render($prefix . $fileInfo['basename'], $options['context']);
   }
   catch (\Exception $e) {
-    return _createPrettyError($e->getMessage());
+    return array(
+      'prettyError' => _createPrettyError($e->getMessage()),
+      'error' => array(
+        'message' => $e->getMessage(),
+        'code' => $e->getCode(),
+        'file' => $e->getFile(),
+        'line' => $e->getLine()
+      )
+    );
   }
 }
 
@@ -126,7 +134,7 @@ function _createPrettyError($message = '') {
         </style>
       </head>
       <body>
-        <div class="error">{$message}</pre>
+        <pre class="error">{$message}</pre>
       </body>
     </html>
 EOT;
