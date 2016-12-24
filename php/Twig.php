@@ -46,7 +46,7 @@ function _invokeExtensions(array $extensions, \Twig_Environment &$twig) {
   // Require all files specified as Twig extensions.
   foreach ($extensions as $extension) {
     require_once $extension['file'];
-    $extension['func']($twig);
+    $extension['func']($twig, isset($extension['config']) ? $extension['config'] : array());
   }
 }
 
