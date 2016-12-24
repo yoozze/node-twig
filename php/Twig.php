@@ -24,12 +24,12 @@ require_once './vendor/autoload.php';
  */
 function _getFilepathPrefix($rootDir, $fileDir) {
   // Get the path segments for each path.
-  $rootChunks = explode('/', $rootDir);
-  $fileChunks = explode('/', $fileDir);
+  $rootChunks = explode(DIRECTORY_SEPARATOR, $rootDir);
+  $fileChunks = explode(DIRECTORY_SEPARATOR, $fileDir);
 
   $prefixChunks = array_diff($fileChunks, $rootChunks);
 
-  return $prefixChunks ? implode('/', $prefixChunks) . '/' : '';
+  return $prefixChunks ? implode(DIRECTORY_SEPARATOR, $prefixChunks) . DIRECTORY_SEPARATOR : '';
 }
 
 /**
