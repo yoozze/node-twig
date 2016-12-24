@@ -86,20 +86,7 @@ function render($entry, $options = array()) {
 
   _invokeExtensions($options['extensions'] ?: array(), $twig);
 
-  try {
-    return $twig->render($prefix . $fileInfo['basename'], $options['context']);
-  }
-  catch (\Exception $e) {
-    return array(
-      'prettyError' => _createPrettyError($e->getMessage()),
-      'error' => array(
-        'message' => $e->getMessage(),
-        'code' => $e->getCode(),
-        'file' => $e->getFile(),
-        'line' => $e->getLine()
-      )
-    );
-  }
+  return $twig->render($prefix . $fileInfo['basename'], $options['context']);
 }
 
 /**

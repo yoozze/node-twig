@@ -15,7 +15,7 @@ exports.renderFile = function(entry, options, cb) {
     // Call the callback on error or the render function on success.
     error ? cb(error) : php.render(entry, options, function (error, stdout) {
       // Call the callback with an error or the trimmed output.
-      error ? cb(error) : cb(null, typeof stdout === 'string' ? trim(stdout) : stdout);
+      error ? cb(error) : cb(null, trim(stdout));
     });
   });
 };
