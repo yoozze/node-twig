@@ -7,7 +7,7 @@ There are a already some packages that render Twig templates but all use alterna
 ## Install
 Install this package through NPM.
 ```
-npm install node-twig --save 
+npm install node-twig --save-dev
 ```
 ## Usage
 ### Standalone
@@ -68,11 +68,15 @@ The *absolute* path to the main template directory. In Express this is probably 
 default: `{}`  
 The value of the context option will be available inside the Twig template. You can use scalar values, arrays or objects at any depths.
 
+### environment
+default: `{}`  
+Twig environment options which will be passed to `Twig_Environment` constructor.
+
 ### extensions
 default: `[]`  
 Since Twig is a PHP library there is no (easy) way to make it extandable inside Node. That's the reason why we provide you with the `extensions` option.
 
-An extension is just a function that takes a reference (*Always use the `&` sign for the parameter*) to the Twig environment which can then be used to define custom functions or filters. To allow for greater flexibility you can add multiple files.
+An extension is just a function that takes a reference (*always use the `&` sign for the parameter*) to the Twig environment which can then be used to define custom functions or filters. To allow for greater flexibility you can add multiple files.
 
 Define your extensions like so:
 
@@ -80,8 +84,9 @@ Define your extensions like so:
 var options = {
   extensions: [
     {
-      file: '/absolute/path/to/php/file.php',
-      func: 'myTwigExtension'
+      file: '/absolute/path/to/php/file.php', // Absolute file path to Twig extension script
+      func: 'myTwigExtension',                // Extension script function name
+      config: {}                              // Configuration object passed to extension script function
     }
   ]
 };
@@ -92,8 +97,8 @@ Your PHP file could look like this:
 ```php
 <?php
 
-function myTwigExtension(\Twig_Environment &$twig) {
-  $twig->addFunction('url', new \Twig_SimpleFunction('url', function ($context, $destination) {
+function myTwigExtension(\Twig_Environment &$twig, $config = array()) {
+  $twig->addFunction(new \Twig_SimpleFunction('url', function ($context, $destination) use ($config) {
     return 'something-fancy';
   }));
 }
