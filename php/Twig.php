@@ -67,6 +67,8 @@ function render($entry, $options = array()) {
     'extensions' => array(),
     'aliases' => array(),
     'context' => array(),
+    'contextPath' => null,
+    'contextVar' => 'context',
     'environment' => array(),
   ), $options);
 
@@ -86,7 +88,13 @@ function render($entry, $options = array()) {
 
   _invokeExtensions($options['extensions'] ?: array(), $twig);
 
-  return $twig->render($prefix . $fileInfo['basename'], $options['context']);
+  $context = $options['context'];
+  if ($options['contextPath'] && $options['contextVar']) {
+    include $options['contextPath'];
+    $context = ${$options['contextVar']};
+  }
+
+  return $twig->render($prefix . $fileInfo['basename'], $context);
 }
 
 /**

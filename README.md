@@ -68,6 +68,14 @@ The *absolute* path to the main template directory. In Express this is probably 
 default: `{}`  
 The value of the context option will be available inside the Twig template. You can use scalar values, arrays or objects at any depths.
 
+### contextPath
+default: `null`  
+The *absolute* path to the PHP file with context variable.
+
+### contextVar
+default: `context`  
+The name of the context variable inside PHP file determined by `contextPath`. The value of this variable will be passed to the Twig template instead of `context` if valid `contextPath` is also provided.
+
 ### environment
 default: `{}`  
 Twig environment options which will be passed to `Twig_Environment` constructor.
