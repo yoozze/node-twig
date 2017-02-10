@@ -51,6 +51,22 @@ function _invokeExtensions(array $extensions, \Twig_Environment &$twig) {
 }
 
 /**
+ * Invokes initialization script.
+ *
+ * @param string file
+ *    Path to initialization (php) file.
+ * @param mixed $context
+ *    Context variable (passed by reference).
+ * @param \Twig_Environment $twig
+ *    Twig_Environment class instance.
+ */
+function _invokeInit($file, &$context, \Twig_Environment &$twig) {
+  if (is_string($file) && strlen($file)) {
+    require_once $file;
+  }
+}
+
+/**
  * Renders a Twig template.
  *
  * @param string $entry
@@ -67,9 +83,8 @@ function render($entry, $options = array()) {
     'extensions' => array(),
     'aliases' => array(),
     'context' => array(),
-    'contextPath' => null,
-    'contextVar' => 'context',
     'environment' => array(),
+    'file' => null,
   ), $options);
 
   // Get the root template directory either from the given file or specified in the options.
@@ -89,10 +104,7 @@ function render($entry, $options = array()) {
   _invokeExtensions($options['extensions'] ?: array(), $twig);
 
   $context = $options['context'];
-  if ($options['contextPath'] && $options['contextVar']) {
-    include $options['contextPath'];
-    $context = ${$options['contextVar']};
-  }
+  _invokeInit($options['file'], $context, $twig);
 
   return $twig->render($prefix . $fileInfo['basename'], $context);
 }
